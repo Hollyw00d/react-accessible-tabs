@@ -63,7 +63,8 @@ const input = [
   }  
 ];
 
-const ActiveTabIdContext = createContext(input[0].tabId);
+const firstInputTabId = input[0].tabId;
+const ActiveTabIdContext = createContext(firstInputTabId);
 
 const activeBtn = {
   backgroundColor: '#000',
@@ -80,13 +81,13 @@ const show = {
 
 // Main App
 function Tabs() {
-  const [activeTabId, setActiveTabId] = useState(input[0].tabId);
+  const [activeTabId, setActiveTabId] = useState(firstInputTabId);
 
   useEffect(() => {
     const hashChangeHandler = () => {
       const hash = window.location.hash.replace('#', '');
       const validTab = input.find(tab => tab.tabId === hash);
-      setActiveTabId(validTab ? validTab.tabId : input[0].tabId);
+      setActiveTabId(validTab ? validTab.tabId : firstInputTabId);
     };
 
     hashChangeHandler();
