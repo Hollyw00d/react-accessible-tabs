@@ -65,6 +65,11 @@ const input = [
 
 const ActiveTabIdContext = createContext(input[0].tabId);
 
+const activeBtn = {
+  backgroundColor: '#000',
+  color: '#fff'
+};
+
 const hide = {
   display: 'none'
 };
@@ -103,12 +108,12 @@ function Tabs() {
     <div>
       <div>
         {input.map(tab => (
-          <TabBtn key={tab.tabId} tab={tab} activeTabId={activeTabId} activeTabIdHandler={activeTabIdHandler} />
+          <TabBtn key={tab.tabId} tab={tab} activeTabIdHandler={activeTabIdHandler} />
         ))}
       </div>
       <div className="tab-content">
         {input.map(tab => (
-          <TabContent key={tab.tabId} tab={tab} activeTabId={activeTabId} />
+          <TabContent key={tab.tabId} tab={tab} />
         ))}
       </div>
     </div>  
@@ -119,7 +124,7 @@ function Tabs() {
 function TabBtn({tab, activeTabIdHandler}) {
   const activeTabId = useContext(ActiveTabIdContext);
 
-  return <button className={activeTabId === tab.tabId ? 'active' : ''} aria-selected={activeTabId === tab.tabId ? 'true' : 'false'} aria-controls={tab.tabId} id={tab.tabId} onClick={activeTabIdHandler}>{tab.tabText}</button>;
+  return <button role="tab" style={activeTabId === tab.tabId ? activeBtn : {}} aria-selected={activeTabId === tab.tabId ? 'true' : 'false'} aria-controls={tab.tabId} id={tab.tabId} onClick={activeTabIdHandler}>{tab.tabText}</button>;
 }
 
 function TabContent({tab}) {
