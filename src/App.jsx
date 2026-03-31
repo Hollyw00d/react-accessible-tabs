@@ -43,7 +43,7 @@ const input = [
    3. TabContent
       Displayed outside of the `Tab` and include `data-id` of `tab-1`, etc. and include TabContent
 */
-import {useState, useEffect, createContext, useContext} from 'react';
+import {useState, useEffect} from 'react';
 
 const input = [
   {
@@ -64,7 +64,6 @@ const input = [
 ];
 
 const firstInputTabId = input[0].tabId;
-const ActiveTabIdContext = createContext(firstInputTabId);
 
 const activeBtn = {
   backgroundColor: '#000',
@@ -73,10 +72,6 @@ const activeBtn = {
 
 const hide = {
   display: 'none'
-};
-
-const show = {
-  display: 'block'
 };
 
 // Main App
@@ -105,34 +100,27 @@ function Tabs() {
   };
 
   return (
-   <ActiveTabIdContext.Provider value={activeTabId}>
     <div>
-      <div>
-        {input.map(tab => (
-          <TabBtn key={tab.tabId} tab={tab} activeTabIdHandler={activeTabIdHandler} />
-        ))}
-      </div>
-      <div className="tab-content">
-        {input.map(tab => (
-          <TabContent key={tab.tabId} tab={tab} />
-        ))}
-      </div>
+        {input.map(tab => {
+          const isActive = activeTabId === tab.tabId; 
+          return <TabBtn key={tab.tabId} tab={tab} activeTabIdHandler={activeTabIdHandler} isActive={isActive} />;
+        })}
+    
+        {input.map(tab => {
+          const isActive = activeTabId === tab.tabId; 
+          return <TabContent key={tab.tabId} tab={tab} isActive={isActive} />
+        })}
     </div>  
-   </ActiveTabIdContext.Provider>
   );
 }
 
-function TabBtn({tab, activeTabIdHandler}) {
-  const activeTabId = useContext(ActiveTabIdContext);
-
-  return <button role="tab" style={activeTabId === tab.tabId ? activeBtn : {}} aria-selected={activeTabId === tab.tabId ? 'true' : 'false'} aria-controls={tab.tabId} id={tab.tabId} onClick={activeTabIdHandler}>{tab.tabText}</button>;
+function TabBtn({tab, activeTabIdHandler, isActive}) {
+  return <button role="tab" style={isActive ? activeBtn : {}} aria-selected={isActive ? 'true' : 'false'} aria-controls={tab.tabId} id={tab.tabId} onClick={activeTabIdHandler}>{tab.tabText}</button>;
 }
 
-function TabContent({tab}) {
-  const activeTabId = useContext(ActiveTabIdContext);
-
+function TabContent({tab, isActive}) {
   return (
-    <div style={activeTabId === tab.tabId ? show : hide} role="tabpanel" aria-labelledby={tab.tabId}>{tab.tabContent}</div>
+    <div style={isActive ? {} : hide} role="tabpanel" aria-labelledby={tab.tabId}>{tab.tabContent}</div>
   );
 }
 
