@@ -101,18 +101,15 @@ function Tabs() {
 
   return (
     <div>
-      <div>
         {input.map(tab => {
           const isActive = activeTabId === tab.tabId; 
           return <TabBtn key={tab.tabId} tab={tab} activeTabIdHandler={activeTabIdHandler} isActive={isActive} />;
         })}
-      </div>
-      <div className="tab-content">
+    
         {input.map(tab => {
           const isActive = activeTabId === tab.tabId; 
           return <TabContent key={tab.tabId} tab={tab} isActive={isActive} />
         })}
-      </div>
     </div>  
   );
 }
