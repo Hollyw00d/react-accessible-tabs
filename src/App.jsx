@@ -1,5 +1,7 @@
 /*
-Implement a tabs component
+Accordion
+
+Build an accordion component that a displays a list of vertically stacked sections with each containing a title and content snippet
 
 Steps:
 1. Clarify requirements (5 min)
@@ -10,30 +12,9 @@ Steps:
    3. What do I need to know for the input or output
    4. How do I manage the state and recommend "controlled" state
       1. PERSONAL THOUGHT: Will I need local storage
-      2. Will this be shareable
-      3. Maybe use React context
 
 Plan:
 1. Input will be whatever I want it to be (and include the key)
-
-const input = [
-  {
-    tabText: 'Tab 1',
-    tabContent: 'Content 1',
-    tabId: 'tab-1'
-  },
-  {
-    tabText: 'Tab 2',
-    tabContent: 'Content 2',
-    tabId: 'tab-2'
-  },
-  {
-    tabText: 'Tab 3',
-    tabContent: 'Content 3',
-    tabId: 'tab-3'
-  }  
-];
-
 2. Components:
    1. Tabs
       List of 3 buttons
@@ -44,84 +25,83 @@ const input = [
       Displayed outside of the `Tab` and include `data-id` of `tab-1`, etc. and include TabContent
 */
 import {useState, useEffect} from 'react';
-
-const input = [
-  {
-    tabText: 'Tab 1',
-    tabContent: 'Content 1',
-    tabId: 'tab-1'
-  },
-  {
-    tabText: 'Tab 2',
-    tabContent: 'Content 2',
-    tabId: 'tab-2'
-  },
-  {
-    tabText: 'Tab 3',
-    tabContent: 'Content 3',
-    tabId: 'tab-3'
-  }  
+const tabsInput = [
+   {
+      btn: 'Button 1',
+      content: 'Content 1',
+      id: 'tab-1'
+   },
+   {
+      btn: 'Button 2',
+      content: 'Content 2',
+      id: 'tab-2'
+   },
+   {
+      btn: 'Button 3',
+      content: 'Content 3',
+      id: 'tab-3'
+   }      
 ];
 
-const firstInputTabId = input[0].tabId;
+const firstTabId = tabsInput[0].id;
 
 const activeBtn = {
-  backgroundColor: '#000',
-  color: '#fff'
+   backgroundColor: '#000',
+   color: '#fff'
 };
 
 const hide = {
-  display: 'none'
+   display: 'none'
 };
 
-// Main App
 function Tabs() {
-  const [activeTabId, setActiveTabId] = useState(firstInputTabId);
+   const [activeTabId, setActiveTabId] = useState(firstTabId);
 
-  useEffect(() => {
-    const hashChangeHandler = () => {
-      const hash = window.location.hash.replace('#', '');
-      const validTab = input.find(tab => tab.tabId === hash);
-      setActiveTabId(validTab ? validTab.tabId : firstInputTabId);
-    };
+   const tabIdHandler = e => {
+      const currentId = e.currentTarget.id;
+      setActiveTabId(currentId);
+      window.location.hash = currentId;
+   };
 
-    hashChangeHandler();
-    window.addEventListener('hashchange', hashChangeHandler);
+   useEffect(() => {
+      function hashChangeHandler() {
+         const hash = window.location.hash.replace('#', '');
+         const validTab = tabsInput.find(tab => tab.id === hash);
+         setActiveTabId(validTab ? validTab.id : firstTabId);
+      }
+      
+     hashChangeHandler();
+     window.addEventListener('hashchange', hashChangeHandler);
 
-    return () => {
+     return () => {
       window.removeEventListener('hashchange', hashChangeHandler);
-    };
-  }, []);
+     };
+   }, []);
 
-  const activeTabIdHandler = (e) => {
-    const id = e.currentTarget.id;
-    window.location.hash = id;
-    setActiveTabId(id);
-  };
-
-  return (
-    <div>
-        {input.map(tab => {
-          const isActive = activeTabId === tab.tabId; 
-          return <TabBtn key={tab.tabId} tab={tab} activeTabIdHandler={activeTabIdHandler} isActive={isActive} />;
-        })}
-    
-        {input.map(tab => {
-          const isActive = activeTabId === tab.tabId; 
-          return <TabContent key={tab.tabId} tab={tab} isActive={isActive} />
-        })}
-    </div>  
-  );
+   return (
+      <div>
+         <div>
+            {tabsInput.map(tab => {
+               const activeTab = activeTabId == tab.id;
+               return <TabBtn key={tab.id} tab={tab} tabIdHandler={tabIdHandler} activeTab={activeTab} />;
+            })}
+         </div>
+         <div>
+            {tabsInput.map(tab => {
+               const activeTab = activeTabId == tab.id;
+               return <TabContent key={tab.id} tab={tab} activeTab={activeTab} />;
+            })}
+         </div>
+      </div>
+   );
 }
 
-function TabBtn({tab, activeTabIdHandler, isActive}) {
-  return <button role="tab" style={isActive ? activeBtn : {}} aria-selected={isActive ? 'true' : 'false'} aria-controls={tab.tabId} id={tab.tabId} onClick={activeTabIdHandler}>{tab.tabText}</button>;
+function TabBtn({tab, tabIdHandler, activeTab}) {
+   return <button id={tab.id} onClick={tabIdHandler} style={activeTab ? activeBtn : {}}>{tab.btn}</button>;
 }
 
-function TabContent({tab, isActive}) {
-  return (
-    <div style={isActive ? {} : hide} role="tabpanel" aria-labelledby={tab.tabId}>{tab.tabContent}</div>
-  );
+function TabContent({tab, activeTab}) {
+   return <div style={activeTab ? {} : hide}>{tab.content}</div>;
 }
 
 export default Tabs;
