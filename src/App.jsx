@@ -1,7 +1,5 @@
 /*
-Accordion
-
-Build an accordion component that a displays a list of vertically stacked sections with each containing a title and content snippet
+Implement a tabs component
 
 Steps:
 1. Clarify requirements (5 min)
@@ -12,6 +10,8 @@ Steps:
    3. What do I need to know for the input or output
    4. How do I manage the state and recommend "controlled" state
       1. PERSONAL THOUGHT: Will I need local storage
+      2. Will this be shareable
+      3. Maybe use React context      
 
 Plan:
 1. Input will be whatever I want it to be (and include the key)
@@ -82,13 +82,13 @@ function Tabs() {
       <div>
          <div>
             {tabsInput.map(tab => {
-               const activeTab = activeTabId == tab.id;
+               const activeTab = activeTabId === tab.id;
                return <TabBtn key={tab.id} tab={tab} tabIdHandler={tabIdHandler} activeTab={activeTab} />;
             })}
          </div>
          <div>
             {tabsInput.map(tab => {
-               const activeTab = activeTabId == tab.id;
+               const activeTab = activeTabId === tab.id;
                return <TabContent key={tab.id} tab={tab} activeTab={activeTab} />;
             })}
          </div>
