@@ -11,7 +11,8 @@ Steps:
    4. How do I manage the state and recommend "controlled" state
       1. PERSONAL THOUGHT: Will I need local storage
       2. Will this be shareable
-      3. Maybe use React context      
+      3. Maybe use React context  
+   5. Mention why I chose a hash, over a query parameter including the tradeoffs    
 
 Plan:
 1. Input will be whatever I want it to be (and include the key)
@@ -61,6 +62,28 @@ function Tabs() {
       const currentId = e.currentTarget.id;
       setActiveTabId(currentId);
       window.location.hash = currentId;
+      // Mention why I chose a hash, over a query parameter including the tradeoffs
+      // Hash parameters are used when I'm scrolling in parts of a page
+      // Also supports back and forth
+      // Query parameters do get passed to backend, and hash parameters don't 
+      // New API called `navigation`:
+      // https://developer.mozilla.org/en-US/docs/Web/API/Navigation_API
+      // Usually render only what is visible, for TabContent only render active content
+      // Pass in data as a prop
+      // Every time I write a component think about reusability
+      // Use window.navigation?.navigate(url.href); rather than useEffect
+      // https://stackblitz.com/edit/vitejs-vite-qu2dpbng?file=src%2FApp.tsx,src%2FTabs.tsx
+      // What if get passed in no tabs
+      // Don't go into useEffect unless there's a good reason to use it
+      // Use a query parameter for tabs as hash is used for a jump link
+      // Nested DIVs are a red flag, and have other <section> or something else
+      // When I make any choice look up options and talk out loud
+      // Talk about trade-offs and options
+      // Look up MDN for accessiblity roles
+      // Always make components reuseable
+      // Unit tests are much easier with smaller components, including readability and maintainability
+      // Common Amazon question: What improvements would you make?
+      // Practice variations of Sum 2
    };
 
    useEffect(() => {
@@ -97,11 +120,11 @@ function Tabs() {
 }
 
 function TabBtn({tab, tabIdHandler, activeTab}) {
-   return <button id={tab.id} onClick={tabIdHandler} style={activeTab ? activeBtn : {}}>{tab.btn}</button>;
+   return <button role="tab" id={tab.id} onClick={tabIdHandler} style={activeTab ? activeBtn : {}}>{tab.btn}</button>;
 }
 
 function TabContent({tab, activeTab}) {
-   return <div style={activeTab ? {} : hide}>{tab.content}</div>;
+   return <div role="tabpanel" style={activeTab ? {} : hide}>{tab.content}</div>;
 }
 
 export default Tabs;
