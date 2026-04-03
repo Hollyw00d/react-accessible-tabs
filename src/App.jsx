@@ -58,7 +58,6 @@ function App() {
 function Tabs({tabs, defaultTabId}) {
    const url = new URL(window.location.href);
    const params = url.searchParams;
-   console.log(url.href);
 
    const [activeTabId, setActiveTabId] = useState(
       params.get(queryParamName) ?? defaultTabId
