@@ -66,7 +66,7 @@ function Tabs({tabs, defaultTabId}) {
    const handleTabChange = tabId => {
       setActiveTabId(tabId);
       params.set(queryParamName, tabId);
-      window.navigation?.navigate(url.href);
+      window.history.pushState({}, '', url);
    };
 
    return (
