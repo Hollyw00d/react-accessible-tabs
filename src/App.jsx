@@ -26,7 +26,7 @@ Plan:
       Displayed outside of the `Tab` and include `data-id` of `tab-1`, etc. and include TabContent
 */
 import {useState, useEffect} from 'react';
-const tabsInput = [
+const tabs = [
    {
       btn: 'Button 1',
       content: 'Content 1',
@@ -55,7 +55,11 @@ const hide = {
    display: 'none'
 };
 
-function Tabs() {
+function App() {
+   return <Tabs tabs={tabs} />
+};
+
+function Tabs({tabs}) {
    const [activeTabId, setActiveTabId] = useState(firstTabId);
 
    const tabIdHandler = e => {
@@ -104,13 +108,13 @@ function Tabs() {
    return (
       <div>
          <div>
-            {tabsInput.map(tab => {
+            {tabs.map(tab => {
                const activeTab = activeTabId === tab.id;
                return <TabBtn key={tab.id} tab={tab} tabIdHandler={tabIdHandler} activeTab={activeTab} />;
             })}
          </div>
          <div>
-            {tabsInput.map(tab => {
+            {tabs.map(tab => {
                const activeTab = activeTabId === tab.id;
                return <TabContent key={tab.id} tab={tab} activeTab={activeTab} />;
             })}
@@ -127,4 +131,4 @@ function TabContent({tab, activeTab}) {
    return <div role="tabpanel" style={activeTab ? {} : hide}>{tab.content}</div>;
 }
 
-export default Tabs;
+export default App;
