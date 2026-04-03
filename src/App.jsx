@@ -86,13 +86,13 @@ function Tabs({tabs, defaultTabId}) {
 }
 
 function TabBtn({tab, handleTabChange, isActive}) {
-   return <button role="tab" id={tab.id} aria-selected={isActive} onClick={() => handleTabChange(tab.id)} style={isActive ? activeBtnStyle : {}}>{tab.btn}</button>;
+   return <button role="tab" id={`${tab.id}-tab`} aria-selected={isActive} aria-controls={`${tab.id}-panel`} onClick={() => handleTabChange(tab.id)} style={isActive ? activeBtnStyle : {}}>{tab.btn}</button>;
 }
 
 function TabPanel({tab, isActive}) {
    if(!isActive) return null;
 
-   return <div role="tabpanel">{tab.content}</div>;
+   return <div role="tabpanel" id={`${tab.id}-panel`} aria-labelledby={`${tab.id}-tab`}>{tab.content}</div>;
 }
 
 export default App;
