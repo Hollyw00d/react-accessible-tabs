@@ -26,6 +26,8 @@ Plan:
       Displayed outside of the `Tab` and include `data-id` of `tab-1`, etc. and include TabPanel
 */
 import {useState, useEffect} from 'react';
+import './App.css';
+
 const tabs = [
    {
       btn: 'MLB',
@@ -43,11 +45,6 @@ const tabs = [
       id: 'nfl'
    }      
 ];
-
-const activeBtnStyle = {
-   backgroundColor: '#000',
-   color: '#fff'
-};
 
 const queryParamName = 'tab';
 
@@ -85,7 +82,7 @@ function Tabs({tabs, defaultTabId}) {
 }
 
 function TabBtn({tab, handleTabChange, isActive}) {
-   return <button role="tab" id={`${tab.id}-tab`} aria-selected={isActive} aria-controls={`${tab.id}-panel`} onClick={() => handleTabChange(tab.id)} style={isActive ? activeBtnStyle : {}}>{tab.btn}</button>;
+   return <button role="tab" id={`${tab.id}-tab`} aria-selected={isActive} aria-controls={`${tab.id}-panel`} onClick={() => handleTabChange(tab.id)} className={isActive ? 'active' : ''}>{tab.btn}</button>;
 }
 
 function TabPanel({tab, isActive}) {
