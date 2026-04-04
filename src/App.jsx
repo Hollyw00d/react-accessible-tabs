@@ -25,70 +25,10 @@ Plan:
    3. TabPanel
       Displayed outside of the `Tab` and include `data-id` of `tab-1`, etc. and include TabPanel
 */
-import {useState, useEffect} from 'react';
+import Tabs from './Tabs';
+import tabs from './api/tabs';
 import './App.css';
 
-const tabs = [
-   {
-      btn: 'MLB',
-      content: 'Major League Baseball',
-      id: 'mlb'
-   },
-   {
-      btn: 'NBA',
-      content: 'National Basketball Association',
-      id: 'nba'
-   },
-   {
-      btn: 'NFL',
-      content: 'National Football League',
-      id: 'nfl'
-   }      
-];
-
-const queryParamName = 'tab';
-
-function App() {
+export default function App() {
    return <Tabs tabs={tabs} defaultTabId="nba" />
 };
-
-function Tabs({tabs, defaultTabId}) {
-   const url = new URL(window.location.href);
-   const params = url.searchParams;
-
-   const [activeTabId, setActiveTabId] = useState(
-      params.get(queryParamName) ?? defaultTabId
-   );
-
-   const handleTabChange = tabId => {
-      setActiveTabId(tabId);
-      params.set(queryParamName, tabId);
-      window.history.pushState({}, '', url);
-   };
-
-   return (
-      <>
-         {tabs.map(tab => {
-            const isActive = activeTabId === tab.id;
-            return <TabBtn key={tab.id} tab={tab} handleTabChange={handleTabChange} isActive={isActive} />;
-         })}
-      
-         {tabs.map(tab => {
-            const isActive = activeTabId === tab.id;
-            return <TabPanel key={tab.id} tab={tab} isActive={isActive} />;
-         })}
-      </>
-   );
-}
-
-function TabBtn({tab, handleTabChange, isActive}) {
-   return <button role="tab" id={`${tab.id}-tab`} aria-selected={isActive} aria-controls={`${tab.id}-panel`} onClick={() => handleTabChange(tab.id)} className={isActive ? 'active' : ''}>{tab.btn}</button>;
-}
-
-function TabPanel({tab, isActive}) {
-   if(!isActive) return null;
-
-   return <div role="tabpanel" id={`${tab.id}-panel`} aria-labelledby={`${tab.id}-tab`}>{tab.content}</div>;
-}
-
-export default App;
